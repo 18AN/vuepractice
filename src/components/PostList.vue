@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h3>Список пользователей</h3>
+    <div v-if="posts.length > 0">
+        <h3>Список постов</h3>
         <post-item 
             v-for="post in posts" 
             :post="post" 
@@ -8,6 +8,7 @@
             @deletePost="$emit('deletePost', post)"
         />
     </div>
+    <h3 v-else>Список постов пуст</h3>
 </template>
 
 <script>
