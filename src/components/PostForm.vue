@@ -1,28 +1,29 @@
 <template>
     <form  @submit.prevent>
         <h4>Create Post</h4>
-        <input 
+        <my-input 
             v-model="post.title" 
-            class="input" 
-            type="text" 
             name="title" 
             placeholder="Title">
-        <input 
+        </my-input>
+        <my-input 
             v-model="post.body"
-            class="input" 
-            type="text" 
             name="description" 
             placeholder="Description">
-        <button 
-            class="button"
+        </my-input>
+        <my-button
+            class="form__button"
             @click="createPost">
             Create
-        </button>
+        </my-button>
     </form>
 </template>
 
 <script>
+import MyButton from '@/UI/MyButton.vue'
+import MyInput from '@/UI/MyInput.vue'
 export default {
+  components: { MyButton, MyInput },
     data(){
         return {
             post: {
@@ -50,19 +51,9 @@ export default {
         flex-direction: column;
     }
 
-    .input{
-        width: 100%;
-        border: 0.1rem solid darkseagreen;
-        padding: 1rem;
+    .form__button{
         margin-top: 1rem;
+        align-self: flex-end;
     }
 
-    .button{
-        align-self: flex-end;
-        margin-top: 1rem;
-        padding: 0.7rem;
-        background: none;
-        color: darkseagreen;
-        border: 0.1rem solid darkseagreen;
-    }
 </style>
