@@ -12,7 +12,7 @@ export default {
 
 <style scoped>
     .button{
-        min-width: 8rem;
+        min-width: 10rem;
         padding: 0.7rem;
         background: none;
         color: darkseagreen;
