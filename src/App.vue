@@ -1,6 +1,11 @@
 <template>
   <div class="app">
     <h1>Страница с постами</h1>
+    <my-input
+      class="search"
+      placeholder="Поиск по заголовку"
+      v-model="searchQuery"
+    />
     <div class="app_btns">
       <my-button @click="showDialog">Создать пост</my-button>
       <my-select
@@ -11,7 +16,7 @@
     <my-form-dialog v-model:show="dialogVisible">
       <post-form @create="createPost" />
     </my-form-dialog>
-    <post-list v-if="!isPostsLoading" :posts="sortedPosts" @deletePost="deletePost" />
+    <post-list v-if="!isPostsLoading" :posts="searchedPosts" @deletePost="deletePost" />
     <div v-else>Posts loading...</div>
   </div>
 </template>
@@ -19,10 +24,11 @@
 <script>
 import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
-import MyFormDialog from "./UI/MyFormDialog.vue";
-import MyButton from "./UI/MyButton.vue";
+import MyFormDialog from "@/UI/MyFormDialog.vue";
+import MyButton from "@/UI/MyButton.vue";
 import axios from "axios";
 import MySelect from './UI/MySelect.vue';
+import MyInput from "@/UI/MyInput.vue";
 export default {
   components: {
     PostForm,
@@ -30,6 +36,7 @@ export default {
     MyFormDialog,
     MyButton,
     MySelect,
+    MyInput,
   },
 
   data() {
@@ -41,7 +48,8 @@ export default {
       sortOptions: [
         {value: "title", name: "По названию"},
         {value: "body", name: "По описанию"},
-      ]
+      ],
+      searchQuery: "",
     };
   },
   methods: {
@@ -75,9 +83,12 @@ export default {
     this.fetchPosts();
   },
   computed: {
-        sortedPosts() {
-          return [...this.posts].sort((post1,post2) => post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
-        }
+      sortedPosts() {
+        return [...this.posts].sort((post1,post2) => post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
+      },
+      searchedPosts() {
+        return this.sortedPosts.filter(post => post.title.includes(this.searchQuery))
+      }
     }
 };
 </script>
@@ -91,6 +102,10 @@ export default {
 
 .app {
   padding: 2rem;
+}
+
+.search {
+  margin-bottom: 25px ;
 }
 
 .app_btns {
